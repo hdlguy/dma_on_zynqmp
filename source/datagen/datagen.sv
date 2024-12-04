@@ -2,9 +2,10 @@
 module datagen(
     input   logic           clk,
     //
-    input   logic           reset,
-    input   logic[31:0]     n_length,
-    input   logic[1:0]      n_chan,
+    input   logic           run,
+    output  logic           busy,
+    input   logic[31:0]     length,
+    input   logic[3:0]      chan,
     //
     output  logic[31:0]     s_axis_s2mm_tdata,
     output  logic[3:0]      s_axis_s2mm_tdest,
@@ -16,31 +17,37 @@ module datagen(
     output  logic           s_axis_s2mm_tvalid
 );
 
+    assign busy = run;
+    assign s_axis_s2mm_tdata = 0;
+    assign s_axis_s2mm_tdest = 0; 
+    assign s_axis_s2mm_tid = 0;   
+    assign s_axis_s2mm_tkeep = 4'b1111; 
+    assign s_axis_s2mm_tlast = 0; 
+    assign s_axis_s2mm_tuser = 0; 
+    assign s_axis_s2mm_tvalid = 0;
 
-
-    
-    logic[3:0] state, next_state;
+    logic[3:0] state=0, next_state;
     always_ff @(posedge clk) state <= next_state;
     
     always_comb begin
         // defaults
         next_state = state;
+        
         case (state)
         
             0: begin
             end
+            
+            default: begin
+                next_state = 0;
+            end
              
         endcase
-    end
-    
+    end    
     
     logic[31:0] length_counter;
     logic[1:0]  chan_counter;
     always_ff @(posedge clk) begin
-        if (reset) begin
-        end else begin
-        end
     end
-    
-    
+        
 endmodule

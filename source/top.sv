@@ -42,6 +42,7 @@ module top (
     logic s_axis_s2mm_tvalid;    
     
     system system_i (
+        // AXI to register file
         .M00_AXI_araddr     (M00_AXI_araddr),
         .M00_AXI_arprot     (M00_AXI_arprot),
         .M00_AXI_arready    (M00_AXI_arready),
@@ -60,8 +61,11 @@ module top (
         .M00_AXI_wdata      (M00_AXI_wdata),
         .M00_AXI_wready     (M00_AXI_wready),
         .M00_AXI_wstrb      (M00_AXI_wstrb),
-        .M00_AXI_wvalid     (M00_AXI_wvalid),
+        .M00_AXI_wvalid     (M00_AXI_wvalid),  
         //
+        .axi_aclk           (axi_aclk),
+        .axi_aresetn        (axi_aresetn),
+        // axis to DMA
         .s_axis_s2mm_tdata  (s_axis_s2mm_tdata),
         .s_axis_s2mm_tdest  (s_axis_s2mm_tdest),
         .s_axis_s2mm_tid    (s_axis_s2mm_tid),
@@ -69,29 +73,49 @@ module top (
         .s_axis_s2mm_tlast  (s_axis_s2mm_tlast),
         .s_axis_s2mm_tready (s_axis_s2mm_tready),
         .s_axis_s2mm_tuser  (s_axis_s2mm_tuser),
-        .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid),        
-        //
-        .axi_aclk           (axi_aclk),
-        .axi_aresetn        (axi_aresetn),
+        .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid),      
         //
         .uart_rxd(uart_rxd),
         .uart_txd(uart_txd)        
     );
     
-    // This register file gives software contol over unit under test (UUT).
+    // data generator for the DMA
+    logic dg_run, dg_busy;
+    logic[3:0] dg_chan;
+    logic[31:0] dg_length;
+	datagen datagen_inst (
+	   .clk(clk), .run(dg_run), .busy(dg_busy), .length(dg_length), .chan(dg_chan), 	   
+	   .s_axis_s2mm_tdata  (s_axis_s2mm_tdata),      
+	   .s_axis_s2mm_tdest  (s_axis_s2mm_tdest),      
+	   .s_axis_s2mm_tid    (s_axis_s2mm_tid),        
+	   .s_axis_s2mm_tkeep  (s_axis_s2mm_tkeep),      
+	   .s_axis_s2mm_tlast  (s_axis_s2mm_tlast),      
+	   .s_axis_s2mm_tready (s_axis_s2mm_tready),     
+	   .s_axis_s2mm_tuser  (s_axis_s2mm_tuser),      
+	   .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid)      	   
+	);	    
+    
+    // This register file gives software control over unit under test (UUT).
     localparam int Nregs = 16;
     logic [Nregs-1:0][31:0] slv_reg, slv_read;
 
     assign slv_read[0] = 32'hdeadbeef;
     assign slv_read[1] = 32'h76543210;
     
-    assign slv_read[2] = slv_reg[2];
-    
-    assign slv_read[Nregs-1:3] = slv_reg[Nregs-1:3];
+    assign dg_run = slv_reg[2][0];
+    assign slv_read[2][1] = dg_busy;
+    assign dg_chan  = slv_reg[2][7:4];
+    assign slv_read[2][0] = slv_reg[2][0];
+    assign slv_read[2][31:2] = slv_reg[2][31:2];
+            
+    assign dg_length = slv_reg[3];
+    assign slv_read[3] = slv_reg[3];
+
+    assign slv_read[Nregs-1:4] = slv_reg[Nregs-1:4];
 
 	axi_regfile_v1_0_S00_AXI #	(
 		.C_S_AXI_DATA_WIDTH(32),
-		.C_S_AXI_ADDR_WIDTH(6) // 16 32 bit registers.
+		.C_S_AXI_ADDR_WIDTH($clog2(Nregs)+2) 
 	) axi_regfile_inst (
         // register interface
         .slv_read(slv_read), 
@@ -121,6 +145,7 @@ module top (
 		.S_AXI_WVALID  (M00_AXI_wvalid )
 	);
 	
+	
 	logic[26:0] led_count;
     always_ff @(posedge axi_aclk) begin
         led_count <= led_count + 1;
@@ -128,7 +153,6 @@ module top (
 	    fan_pwm <= led_count[17] & led_count[16] & led_count[15];
 	end
 
-    top_ila top_ila_inst (.clk(axi_aclk), .probe0(led_count)); // 27
 
     // let us use the 200MHz differential clock
     logic clkin200, clk200;
@@ -137,7 +161,20 @@ module top (
     
 	logic[26:0] clk200_count;
     always_ff @(posedge clk200) clk200_count <= clk200_count + 1;
-    top_ila clk200_ila_inst (.clk(clk200), .probe0(clk200_count)); // 27    
+    top_ila clk200_ila_inst (.clk(clk200), .probe0(clk200_count)); // 27
     
+    
+    top_ila top_ila_inst (.clk(axi_aclk), .probe0({s_axis_s2mm_tdata,s_axis_s2mm_tdest,s_axis_s2mm_tid,s_axis_s2mm_tkeep,s_axis_s2mm_tlast,s_axis_s2mm_tready,s_axis_s2mm_tuser,s_axis_s2mm_tvalid})); // 32+4+8+4+16+3=67
+           
 endmodule
-    
+
+/*
+//    logic [31:0]s_axis_s2mm_tdata;
+//    logic [3:0]s_axis_s2mm_tdest;
+//    logic [7:0]s_axis_s2mm_tid;
+//    logic [3:0]s_axis_s2mm_tkeep;
+//    logic s_axis_s2mm_tlast;
+//    logic s_axis_s2mm_tready;
+//    logic [15:0]s_axis_s2mm_tuser;
+//    logic s_axis_s2mm_tvalid;     
+*/    
