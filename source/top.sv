@@ -32,7 +32,15 @@ module top (
     logic           axi_aclk;
     logic [0:0]     axi_aresetn;
     
-
+    logic [31:0]s_axis_s2mm_tdata;
+    logic [3:0]s_axis_s2mm_tdest;
+    logic [7:0]s_axis_s2mm_tid;
+    logic [3:0]s_axis_s2mm_tkeep;
+    logic s_axis_s2mm_tlast;
+    logic s_axis_s2mm_tready;
+    logic [15:0]s_axis_s2mm_tuser;
+    logic s_axis_s2mm_tvalid;    
+    
     system system_i (
         .M00_AXI_araddr     (M00_AXI_araddr),
         .M00_AXI_arprot     (M00_AXI_arprot),
@@ -53,6 +61,15 @@ module top (
         .M00_AXI_wready     (M00_AXI_wready),
         .M00_AXI_wstrb      (M00_AXI_wstrb),
         .M00_AXI_wvalid     (M00_AXI_wvalid),
+        //
+        .s_axis_s2mm_tdata  (s_axis_s2mm_tdata),
+        .s_axis_s2mm_tdest  (s_axis_s2mm_tdest),
+        .s_axis_s2mm_tid    (s_axis_s2mm_tid),
+        .s_axis_s2mm_tkeep  (s_axis_s2mm_tkeep),
+        .s_axis_s2mm_tlast  (s_axis_s2mm_tlast),
+        .s_axis_s2mm_tready (s_axis_s2mm_tready),
+        .s_axis_s2mm_tuser  (s_axis_s2mm_tuser),
+        .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid),        
         //
         .axi_aclk           (axi_aclk),
         .axi_aresetn        (axi_aresetn),
