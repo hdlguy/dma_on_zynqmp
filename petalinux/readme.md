@@ -10,8 +10,8 @@ cd proj1
 
 petalinux-config --get-hw-description=../../implement/results/
 
-    * Yocto Settings -> Add pre-mirror url -> change http: to https:
-    * Yocto Settings -> Network State Feeds url -> change http: to https:
+    * Yocto Settings -> Add pre-mirror url -> change http: to https:                        (default in 2024.2)
+    * Yocto Settings -> Network State Feeds url -> change http: to https:                   (default in 2024.2)
     * Image Packaging Configuration -> EXT4                                                 (if you want a persistent rootfs)
     * Image Packaging Configuration -> Device node of SD device -> mmcblk1p2                (if you have the eMMC device enabled in Vivado IPI)
     * Subsystem Auto Hardware Settings -> SD/SDIO Settings -> Primary SD/SDIO -> psu_sd_1   (if you have the eMMC device enabled in Vivado IPI)
@@ -22,8 +22,8 @@ petalinux-build -c bootloader -x distclean
 petalinux-config -c kernel
 
     * Device Drivers -> nvme -> nvme as block device.
-    * Device Drivers -> Phy Subsystem -> PHY Core.
-    * Device Drivers -> Phy Subsystem -> Xilinx ZynqMP PHY driver.
+    * Device Drivers -> Phy Subsystem -> PHY Core.                  (default in 2024.1)
+    * Device Drivers -> Phy Subsystem -> Xilinx ZynqMP PHY driver.  (default in 2024.1)
     * save and exit
 
 petalinux-build
