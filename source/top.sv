@@ -3,10 +3,7 @@ module top (
     output  logic           pl_led1,
     output  logic           fan_pwm,
     input   logic           clkin200_p,
-    input   logic           clkin200_n,
-    //
-    input   logic           uart_rxd,
-    output  logic           uart_txd        
+    input   logic           clkin200_n  
 );
 
     logic [39:0]    M00_AXI_araddr;
@@ -73,10 +70,7 @@ module top (
         .s_axis_s2mm_tlast  (s_axis_s2mm_tlast),
         .s_axis_s2mm_tready (s_axis_s2mm_tready),
         .s_axis_s2mm_tuser  (s_axis_s2mm_tuser),
-        .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid),      
-        //
-        .uart_rxd(uart_rxd),
-        .uart_txd(uart_txd)        
+        .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid)
     );
     
     // data generator for the DMA
