@@ -4,15 +4,16 @@
 
 petalinux-create --force --type project --template zynqMP --name proj1
 
-cp system-user.dtsi proj1/project-spec/meta-user/recipes-bsp/device-tree/files/
+## cp system-user.dtsi proj1/project-spec/meta-user/recipes-bsp/device-tree/files/
 
 cd proj1
 
-petalinux-config --get-hw-description=../../implement/results/
+#petalinux-config --get-hw-description=../../implement/results/
+petalinux-config --get-hw-description=../../implement/sdt/
 
     * Yocto Settings -> Add pre-mirror url -> change http: to https:                        (default in 2024.2)
     * Yocto Settings -> Network State Feeds url -> change http: to https:                   (default in 2024.2)
-    * Image Packaging Configuration -> EXT4                                                 (if you want a persistent rootfs)
+    * Image Packaging Configuration -> Root Filesystem Type -> EXT4                         (if you want a persistent rootfs)
     * Image Packaging Configuration -> Device node of SD device -> mmcblk1p2                (if you have the eMMC device enabled in Vivado IPI)
     * Subsystem Auto Hardware Settings -> SD/SDIO Settings -> Primary SD/SDIO -> psu_sd_1   (if you have the eMMC device enabled in Vivado IPI)
     * save and exit
