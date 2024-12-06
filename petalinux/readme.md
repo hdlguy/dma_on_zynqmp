@@ -1,38 +1,50 @@
-# Petalinux Build instructions
+# Petalinux (2024.2) on ZynqMP AXU2CG-E Board
+
+## Petalinux Build instructions
 
     * open https://petalinux.xilinx.com/ in a web browser. this makes sure we have a good connection to the yocto downloads.
 
+### Convert the vivado .xsa file to the system device tree files that Petalinux 2024.x wants.
+
+/tools/Xilinx/Vitis/2024.2/bin/xsct ./sdt.tcl
+
+### Create Petalinux project
+
 petalinux-create --force --type project --template zynqMP --name proj1
 
-## cp system-user.dtsi proj1/project-spec/meta-user/recipes-bsp/device-tree/files/
+### configure project from hardware
 
 cd proj1
 
-#petalinux-config --get-hw-description=../../implement/results/
-petalinux-config --get-hw-description=../../implement/sdt/
+petalinux-config --get-hw-description=../sdt/
 
-    * Yocto Settings -> Add pre-mirror url -> change http: to https:                        (default in 2024.2)
-    * Yocto Settings -> Network State Feeds url -> change http: to https:                   (default in 2024.2)
     * Image Packaging Configuration -> Root Filesystem Type -> EXT4                         (if you want a persistent rootfs)
     * Image Packaging Configuration -> Device node of SD device -> mmcblk1p2                (if you have the eMMC device enabled in Vivado IPI)
     * Subsystem Auto Hardware Settings -> SD/SDIO Settings -> Primary SD/SDIO -> psu_sd_1   (if you have the eMMC device enabled in Vivado IPI)
     * save and exit
 
+### Build the bootloader
+
 petalinux-build -c bootloader -x distclean
+
+### Configure the kernel
 
 petalinux-config -c kernel
 
-    * Device Drivers -> nvme -> nvme as block device.
-    * Device Drivers -> Phy Subsystem -> PHY Core.                  (default in 2024.1)
-    * Device Drivers -> Phy Subsystem -> Xilinx ZynqMP PHY driver.  (default in 2024.1)
+    * Device Drivers -> NVMe Support -> nvme as block device.
     * save and exit
+
+### Build
 
 petalinux-build
 
     * NOTE: frequently petalinux-build generates error messages. Just rerun the previous three commands to resolve that. (Who knows why?)
 
+### Package 
+
 petalinux-package --force --boot --u-boot --kernel --offset 0xF40000 --fpga ../../implement/results/top.bit
 
+### Copy to SD Card
 
 cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
 

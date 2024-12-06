@@ -1,6 +1,7 @@
-/include/ "system-conf.dtsi"
+/* /include/ "system-conf.dtsi" */
 
 / {
+/*
 	clock_si5223_0: clk27 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -24,6 +25,7 @@
 		#clock-cells = <0>;
 		clock-frequency = <100000000>;
 	};
+*/
 };
 
 &pinctrl0 {
@@ -57,10 +59,12 @@
 	};
 };
 
+/*
 &psgtr {
     clocks = <&clock_si5223_0 &clock_si5223_1 &clock_si5223_3 &clock_si5223_4>;
     clock-names = "ref0", "ref1", "ref2", "ref3";
 };
+*/
 
 /* SD */
 &sdhci1 {
