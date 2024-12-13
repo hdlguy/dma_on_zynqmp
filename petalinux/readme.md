@@ -44,6 +44,9 @@ petalinux-build
 
 petalinux-package --force --boot --u-boot --kernel --offset 0xF40000 --fpga ../../implement/results/top.bit
 
+petalinux-package --force --boot --fsbl --fpga --pmufw --u-boot
+
+
 ### Copy to SD Card
 
 cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
