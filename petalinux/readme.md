@@ -6,7 +6,7 @@
 
 ### Convert the vivado .xsa file to the system device tree files that Petalinux 2024.x wants.
 
-/tools/Xilinx/Vitis/2024.2/bin/xsct ./sdt.tcl
+/tools/Xilinx/Vitis/2024.2/bin/xsct ./gensdt.tcl
 
 ### Create Petalinux project
 

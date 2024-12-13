@@ -5,7 +5,7 @@ module datagen(
     input   logic           run,
     output  logic           busy,
     input   logic[31:0]     length,
-    input   logic[3:0]      chan,
+    input   logic[1:0]      chan,
     //
     output  logic[31:0]     s_axis_s2mm_tdata,
     output  logic[3:0]      s_axis_s2mm_tdest,
@@ -17,25 +17,54 @@ module datagen(
     output  logic           s_axis_s2mm_tvalid
 );
 
-    assign busy = run;
     assign s_axis_s2mm_tdata = 0;
     assign s_axis_s2mm_tdest = 0; 
     assign s_axis_s2mm_tid = 0;   
     assign s_axis_s2mm_tkeep = 4'b1111; 
     assign s_axis_s2mm_tlast = 0; 
     assign s_axis_s2mm_tuser = 0; 
-    assign s_axis_s2mm_tvalid = 0;
 
     logic[3:0] state=0, next_state;
     always_ff @(posedge clk) state <= next_state;
     
+    logic length_count_inc;
+    logic length_count_clr;
+    logic[31:0] length_count;
     always_comb begin
         // defaults
         next_state = state;
+        busy = 0;
+        length_count_inc = 0;
+        length_count_clr = 0;
+        s_axis_s2mm_tvalid = 0;
         
         case (state)
         
             0: begin
+                next_state = 1;
+            end
+            
+            1: begin
+                length_count_clr = 1;
+                if (run) begin
+                    next_state = 2;
+                end
+            end 
+            
+            2: begin
+                busy = 1;
+                if (s_axis_s2mm_tready) begin
+                    length_count_inc = 1;
+                    if (length_count == length) begin
+                        next_state = 3;
+                    end else begin                    
+                        s_axis_s2mm_tvalid = 1;
+                    end
+                end
+            end
+            
+            3: begin
+                next_state = 1;
             end
             
             default: begin
@@ -45,8 +74,6 @@ module datagen(
         endcase
     end    
     
-    logic[31:0] length_counter;
-    logic[1:0]  chan_counter;
     always_ff @(posedge clk) begin
     end
         
