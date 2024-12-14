@@ -54,8 +54,22 @@
     maximum-speed = "super-speed";
 };
 
+/*
 &gem3 {
     status = "okay";
     local-mac-address = [00 0a 35 00 02 90];
+};
+*/
+
+&gem3 {
+    status = "okay";
+    local-mac-address = [00 0a 35 00 02 90];
+    phy-mode = "rgmii-id";
+    phy-handle = <&phy0>;
+    phy0: phy@4 {
+        reg = <4>;
+        compatible = "micrel,ksz9031";
+        device_type = "ethernet-phy";
+    };
 };
 
