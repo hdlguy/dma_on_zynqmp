@@ -74,19 +74,19 @@ module top (
     );
     
     // data generator for the DMA
-    logic dg_run, dg_busy;
+    logic dg_run, dg_done;
     logic[3:0] dg_chan;
     logic[31:0] dg_length;
 	datagen datagen_inst (
-	   .clk(clk), .run(dg_run), .busy(dg_busy), .length(dg_length), .chan(dg_chan), 	   
-	   .s_axis_s2mm_tdata  (s_axis_s2mm_tdata),      
-	   .s_axis_s2mm_tdest  (s_axis_s2mm_tdest),      
-	   .s_axis_s2mm_tid    (s_axis_s2mm_tid),        
-	   .s_axis_s2mm_tkeep  (s_axis_s2mm_tkeep),      
-	   .s_axis_s2mm_tlast  (s_axis_s2mm_tlast),      
-	   .s_axis_s2mm_tready (s_axis_s2mm_tready),     
-	   .s_axis_s2mm_tuser  (s_axis_s2mm_tuser),      
-	   .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid)      	   
+	   .clk(clk), .run(dg_run), .done(dg_done), .length(dg_length), .chan(dg_chan), 	   
+	   .m_axis_tdata  (s_axis_s2mm_tdata),      
+	   .m_axis_tdest  (s_axis_s2mm_tdest),      
+	   .m_axis_tid    (s_axis_s2mm_tid),        
+	   .m_axis_tkeep  (s_axis_s2mm_tkeep),      
+	   .m_axis_tlast  (s_axis_s2mm_tlast),      
+	   .m_axis_tready (s_axis_s2mm_tready),     
+	   .m_axis_tuser  (s_axis_s2mm_tuser),      
+	   .m_axis_tvalid (s_axis_s2mm_tvalid)      	   
 	);	    
     
     // This register file gives software control over unit under test (UUT).
@@ -97,7 +97,7 @@ module top (
     assign slv_read[1] = 32'h76543210;
     
     assign dg_run = slv_reg[2][0];
-    assign slv_read[2][1] = dg_busy;
+    assign slv_read[2][1] = dg_done;
     assign dg_chan  = slv_reg[2][7:4];
     assign slv_read[2][0] = slv_reg[2][0];
     assign slv_read[2][31:2] = slv_reg[2][31:2];

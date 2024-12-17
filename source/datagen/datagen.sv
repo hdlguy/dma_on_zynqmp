@@ -3,26 +3,20 @@ module datagen(
     input   logic           clk,
     //
     input   logic           run,
-    output  logic           busy,
-    input   logic[31:0]     length,
-    input   logic[1:0]      chan,
+    output  logic           done,
+    input   logic[31:0]     length,  // lenght of transfer minus 1.
+    input   logic[3:0]      chan,
     //
-    output  logic[31:0]     s_axis_s2mm_tdata,
-    output  logic[3:0]      s_axis_s2mm_tdest,
-    output  logic[7:0]      s_axis_s2mm_tid,
-    output  logic[3:0]      s_axis_s2mm_tkeep,
-    output  logic           s_axis_s2mm_tlast,
-    input   logic           s_axis_s2mm_tready,
-    output  logic[15:0]     s_axis_s2mm_tuser,
-    output  logic           s_axis_s2mm_tvalid
+    output  logic[31:0]     m_axis_tdata,
+    output  logic[3:0]      m_axis_tdest,
+    output  logic[7:0]      m_axis_tid,
+    output  logic[3:0]      m_axis_tkeep,
+    output  logic           m_axis_tlast,
+    input   logic           m_axis_tready,
+    output  logic[15:0]     m_axis_tuser,
+    output  logic           m_axis_tvalid
 );
 
-    assign s_axis_s2mm_tdata = 0;
-    assign s_axis_s2mm_tdest = 0; 
-    assign s_axis_s2mm_tid = 0;   
-    assign s_axis_s2mm_tkeep = 4'b1111; 
-    assign s_axis_s2mm_tlast = 0; 
-    assign s_axis_s2mm_tuser = 0; 
 
     logic[3:0] state=0, next_state;
     always_ff @(posedge clk) state <= next_state;
@@ -33,33 +27,37 @@ module datagen(
     always_comb begin
         // defaults
         next_state = state;
-        busy = 0;
+        done = 0;
         length_count_inc = 0;
         length_count_clr = 0;
-        s_axis_s2mm_tvalid = 0;
+        m_axis_tvalid = 0;
+        m_axis_tlast = 0;
         
         case (state)
         
             0: begin
+                done = 1;
                 next_state = 1;
             end
             
             1: begin
                 length_count_clr = 1;
+                done = 1;
                 if (run) begin
                     next_state = 2;
                 end
             end 
             
             2: begin
-                busy = 1;
-                if (s_axis_s2mm_tready) begin
+                m_axis_tvalid = 1;
+                if (m_axis_tready) begin
                     length_count_inc = 1;
                     if (length_count == length) begin
                         next_state = 3;
-                    end else begin                    
-                        s_axis_s2mm_tvalid = 1;
                     end
+                end                
+                if (length_count == length) begin
+                    m_axis_tlast = 1;
                 end
             end
             
@@ -75,6 +73,19 @@ module datagen(
     end    
     
     always_ff @(posedge clk) begin
+        if (length_count_clr) begin
+            length_count <= 0;
+        end else begin
+            if (length_count_inc) begin
+                length_count <= length_count + 1;
+            end
+        end
     end
-        
+
+    assign m_axis_tdata = length_count;
+    assign m_axis_tdest = 0; 
+    assign m_axis_tid = 0;   
+    assign m_axis_tkeep = 4'b1111; 
+    assign m_axis_tuser = 0; 
+            
 endmodule

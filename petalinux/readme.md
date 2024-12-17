@@ -95,10 +95,11 @@ Add these sources to /etc/apt/sources.list
     auto eth0
     iface eth0 inet dhcp
 
-    Exit chroot.
+Exit chroot.
 
-exit
-    Write filesystem to SD card.
+    exit
+
+Write filesystem to SD card.
 
 sudo cp --recursive --preserve ./debianMinimalRootFS/* /media/pedro/rootfs/; sync
 

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Tue Dec 10 17:44:53 2024
+| Date         : Tue Dec 17 11:46:51 2024
 | Host         : pdudley-msi-laptop running 64-bit Ubuntu 22.04.5 LTS
 | Command      : report_utilization -file ./results/utilization.rpt
 | Design       : top
@@ -33,8 +33,8 @@ Table of Contents
 +----------------------------+-------+-------+------------+-----------+-------+
 |          Site Type         |  Used | Fixed | Prohibited | Available | Util% |
 +----------------------------+-------+-------+------------+-----------+-------+
-| CLB LUTs                   | 15295 |     0 |          0 |     47232 | 32.38 |
-|   LUT as Logic             | 13235 |     0 |          0 |     47232 | 28.02 |
+| CLB LUTs                   | 15284 |     0 |          0 |     47232 | 32.36 |
+|   LUT as Logic             | 13224 |     0 |          0 |     47232 | 28.00 |
 |   LUT as Memory            |  2060 |     0 |          0 |     28800 |  7.15 |
 |     LUT as Distributed RAM |  1166 |     0 |            |           |       |
 |     LUT as Shift Register  |   894 |     0 |            |           |       |
@@ -74,13 +74,13 @@ Table of Contents
 +--------------------------------------------+-------+-------+------------+-----------+-------+
 |                  Site Type                 |  Used | Fixed | Prohibited | Available | Util% |
 +--------------------------------------------+-------+-------+------------+-----------+-------+
-| CLB                                        |  3178 |     0 |          0 |      8820 | 36.03 |
-|   CLBL                                     |  2039 |     0 |            |           |       |
-|   CLBM                                     |  1139 |     0 |            |           |       |
-| LUT as Logic                               | 13235 |     0 |          0 |     47232 | 28.02 |
-|   using O5 output only                     |   559 |       |            |           |       |
+| CLB                                        |  3072 |     0 |          0 |      8820 | 34.83 |
+|   CLBL                                     |  2019 |     0 |            |           |       |
+|   CLBM                                     |  1053 |     0 |            |           |       |
+| LUT as Logic                               | 13224 |     0 |          0 |     47232 | 28.00 |
+|   using O5 output only                     |   537 |       |            |           |       |
 |   using O6 output only                     |  9199 |       |            |           |       |
-|   using O5 and O6                          |  3477 |       |            |           |       |
+|   using O5 and O6                          |  3488 |       |            |           |       |
 | LUT as Memory                              |  2060 |     0 |          0 |     28800 |  7.15 |
 |   LUT as Distributed RAM                   |  1166 |     0 |            |           |       |
 |     using O5 output only                   |     0 |       |            |           |       |
@@ -91,11 +91,11 @@ Table of Contents
 |     using O6 output only                   |   317 |       |            |           |       |
 |     using O5 and O6                        |   577 |       |            |           |       |
 | CLB Registers                              | 21747 |     0 |          0 |     94464 | 23.02 |
-|   Register driven from within the CLB      | 11464 |       |            |           |       |
-|   Register driven from outside the CLB     | 10283 |       |            |           |       |
-|     LUT in front of the register is unused |  6673 |       |            |           |       |
-|     LUT in front of the register is used   |  3610 |       |            |           |       |
-| Unique Control Sets                        |  1135 |       |          0 |     17640 |  6.43 |
+|   Register driven from within the CLB      | 11577 |       |            |           |       |
+|   Register driven from outside the CLB     | 10170 |       |            |           |       |
+|     LUT in front of the register is unused |  6281 |       |            |           |       |
+|     LUT in front of the register is used   |  3889 |       |            |           |       |
+| Unique Control Sets                        |  1137 |       |          0 |     17640 |  6.45 |
 +--------------------------------------------+-------+-------+------------+-----------+-------+
 * * Note: Available Control Sets calculated as Slices * 2, Review the Control Sets Report for more information regarding control sets.
 
@@ -208,9 +208,9 @@ Table of Contents
 +-----------+-------+---------------------+
 | FDRE      | 20732 |            Register |
 | LUT6      |  5907 |                 CLB |
-| LUT3      |  3546 |                 CLB |
+| LUT3      |  3547 |                 CLB |
 | LUT5      |  2786 |                 CLB |
-| LUT4      |  2551 |                 CLB |
+| LUT4      |  2550 |                 CLB |
 | RAMD32    |  1630 |                 CLB |
 | LUT2      |  1352 |                 CLB |
 | SRL16E    |   835 |                 CLB |
