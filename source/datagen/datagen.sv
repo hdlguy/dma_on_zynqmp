@@ -5,7 +5,7 @@ module datagen(
     input   logic           run,
     output  logic           done,
     input   logic[31:0]     length,  // lenght of transfer minus 1.
-    input   logic[3:0]      chan,
+    input   logic[3:0]      chan,    // which channels to generate
     //
     output  logic[31:0]     m_axis_tdata,
     output  logic[3:0]      m_axis_tdest,
