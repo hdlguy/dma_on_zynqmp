@@ -3,8 +3,8 @@ module dgen_mem #(
     parameter int size   = 2**16,   // size in bytes
     parameter int awidth = 32,      // multiple of 8
     parameter int bwidth = 16,       // mutiple of 8
-    parameter int Naddra = size*8/awidth,
-    parameter int Naddrb = size*8/bwidth
+    parameter int Naddra = $clog2(size*8/awidth),
+    parameter int Naddrb = $clog2(size*8/bwidth)
 ) (
     input   logic               clka,
     input   logic[awidth/8-1:0] wea,
