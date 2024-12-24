@@ -29,14 +29,10 @@ module top (
     logic           axi_aclk;
     logic [0:0]     axi_aresetn;
     
-    logic [31:0]s_axis_s2mm_tdata;
-    logic [3:0]s_axis_s2mm_tdest;
-    logic [7:0]s_axis_s2mm_tid;
-    logic [3:0]s_axis_s2mm_tkeep;
-    logic s_axis_s2mm_tlast;
-    logic s_axis_s2mm_tready;
-    logic [15:0]s_axis_s2mm_tuser;
-    logic s_axis_s2mm_tvalid;    
+    logic[3:0]       bram_clk, bram_rst, bram_en;
+    logic[3:0][3:0]  bram_we;
+    logic[3:0][15:0] bram_addr;
+    logic[3:0][31:0] bram_din, bram_dout;
     
     system system_i (
         // AXI to register file
@@ -62,32 +58,56 @@ module top (
         //
         .axi_aclk           (axi_aclk),
         .axi_aresetn        (axi_aresetn),
-        // axis to DMA
-        .s_axis_s2mm_tdata  (s_axis_s2mm_tdata),
-        .s_axis_s2mm_tdest  (s_axis_s2mm_tdest),
-        .s_axis_s2mm_tid    (s_axis_s2mm_tid),
-        .s_axis_s2mm_tkeep  (s_axis_s2mm_tkeep),
-        .s_axis_s2mm_tlast  (s_axis_s2mm_tlast),
-        .s_axis_s2mm_tready (s_axis_s2mm_tready),
-        .s_axis_s2mm_tuser  (s_axis_s2mm_tuser),
-        .s_axis_s2mm_tvalid (s_axis_s2mm_tvalid)
+        // interfaces to data bram
+        .bram3_clk          (bram_clk [3]),
+        .bram3_addr         (bram_addr[3]),
+        .bram3_rst          (bram_rst [3]),
+        .bram3_we           (bram_we  [3]),
+        .bram3_en           (bram_en  [3]),
+        .bram3_din          (bram_din [3]),
+        .bram3_dout         (bram_dout[3]),
+
+        .bram2_clk          (bram_clk [2]),
+        .bram2_addr         (bram_addr[2]),
+        .bram2_rst          (bram_rst [2]),
+        .bram2_we           (bram_we  [2]),
+        .bram2_en           (bram_en  [2]),
+        .bram2_din          (bram_din [2]),
+        .bram2_dout         (bram_dout[2]),
+
+        .bram1_clk          (bram_clk [1]),
+        .bram1_addr         (bram_addr[1]),
+        .bram1_rst          (bram_rst [1]),
+        .bram1_we           (bram_we  [1]),
+        .bram1_en           (bram_en  [1]),
+        .bram1_din          (bram_din [1]),
+        .bram1_dout         (bram_dout[1]),
+
+        .bram0_clk          (bram_clk [0]),
+        .bram0_addr         (bram_addr[0]),
+        .bram0_rst          (bram_rst [0]),
+        .bram0_we           (bram_we  [0]),
+        .bram0_en           (bram_en  [0]),
+        .bram0_din          (bram_din [0]),
+        .bram0_dout         (bram_dout[0])
     );
     
     // data generator for the DMA
-    logic dg_run, dg_done;
-    logic[3:0] dg_chan;
-    logic[31:0] dg_length;
-	datagen datagen_inst (
-	   .clk(clk), .run(dg_run), .done(dg_done), .length(dg_length), .chan(dg_chan), 	   
-	   .m_axis_tdata  (s_axis_s2mm_tdata),      
-	   .m_axis_tdest  (s_axis_s2mm_tdest),      
-	   .m_axis_tid    (s_axis_s2mm_tid),        
-	   .m_axis_tkeep  (s_axis_s2mm_tkeep),      
-	   .m_axis_tlast  (s_axis_s2mm_tlast),      
-	   .m_axis_tready (s_axis_s2mm_tready),     
-	   .m_axis_tuser  (s_axis_s2mm_tuser),      
-	   .m_axis_tvalid (s_axis_s2mm_tvalid)      	   
-	);	    
+    logic dg_enable, dg_ready, dg_clear;
+    datagen datagen_inst (
+        .clk        (clk), 
+        .enable     (dg_enable),
+        .ready      (dg_ready),
+        .clear      (dg_clear),
+        //
+        .bram_clk   (bram_clk),
+        .bram_addr  (bram_addr),
+        .bram_rst   (bram_rst),
+        .bram_we    (bram_we),
+        .bram_en    (bram_en),
+        .bram_din   (bram_din),
+        .bram_dout  (bram_dout)
+    );	    
     
     // This register file gives software control over unit under test (UUT).
     localparam int Nregs = 16;
@@ -96,13 +116,12 @@ module top (
     assign slv_read[0] = 32'hdeadbeef;
     assign slv_read[1] = 32'h76543210;
     
-    assign dg_run = slv_reg[2][0];
-    assign slv_read[2][1] = dg_done;
-    assign dg_chan  = slv_reg[2][7:4];
-    assign slv_read[2][0] = slv_reg[2][0];
-    assign slv_read[2][31:2] = slv_reg[2][31:2];
+    assign dg_enable = slv_reg[2][0];
+    assign slv_read[2][3:0] = slv_reg[2][3:0];
+    assign slv_read[2][4] = dg_ready;
+    assign dg_clear = slv_reg[2][8];
+    assign slv_read[2][31:5] = slv_reg[2][31:5];
             
-    assign dg_length = slv_reg[3];
     assign slv_read[3] = slv_reg[3];
 
     assign slv_read[Nregs-1:4] = slv_reg[Nregs-1:4];
@@ -163,12 +182,5 @@ module top (
 endmodule
 
 /*
-//    logic [31:0]s_axis_s2mm_tdata;
-//    logic [3:0]s_axis_s2mm_tdest;
-//    logic [7:0]s_axis_s2mm_tid;
-//    logic [3:0]s_axis_s2mm_tkeep;
-//    logic s_axis_s2mm_tlast;
-//    logic s_axis_s2mm_tready;
-//    logic [15:0]s_axis_s2mm_tuser;
-//    logic s_axis_s2mm_tvalid;     
+  
 */    
