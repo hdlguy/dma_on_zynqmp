@@ -11,6 +11,7 @@ set_property default_lib work [current_project]
 #upgrade_ip -quiet  [get_ips *]
 #generate_target {all} [get_ips *]
 
+read_verilog -sv ../dgen_mem.sv  
 read_verilog -sv ../datagen.sv  
 read_verilog -sv ../datagen_tb.sv
 
