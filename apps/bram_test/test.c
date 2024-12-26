@@ -71,6 +71,67 @@ int main(int argc,char** argv)
     free(write_data);
     free(read_data);
 
+    // Test data ram 1
+    write_data = malloc(DATA_RAM_SIZE);
+    read_data  = malloc(DATA_RAM_SIZE);
+    // create test data.
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) write_data[i] = rand();
+    bram_ptr = base_addr + DATA_RAM1;
+    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
+    // write bram
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
+    // read bram
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
+    // chech bram results
+    errors = 0;
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) {
+        if (read_data[i] != write_data[i]) errors++;
+    }
+    fprintf(stdout, "data ram 1 errors = %d\n", errors);
+    free(write_data);
+    free(read_data);
+
+    // Test data ram 2
+    write_data = malloc(DATA_RAM_SIZE);
+    read_data  = malloc(DATA_RAM_SIZE);
+    // create test data.
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) write_data[i] = rand();
+    bram_ptr = base_addr + DATA_RAM2;
+    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
+    // write bram
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
+    // read bram
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
+    // chech bram results
+    errors = 0;
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) {
+        if (read_data[i] != write_data[i]) errors++;
+    }
+    fprintf(stdout, "data ram 2 errors = %d\n", errors);
+    free(write_data);
+    free(read_data);
+
+    // Test data ram 3
+    write_data = malloc(DATA_RAM_SIZE);
+    read_data  = malloc(DATA_RAM_SIZE);
+    // create test data.
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) write_data[i] = rand();
+    bram_ptr = base_addr + DATA_RAM3;
+    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
+    // write bram
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
+    // read bram
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
+    // chech bram results
+    errors = 0;
+    for (int i=0; i<DATA_RAM_SIZE/4; i++) {
+        if (read_data[i] != write_data[i]) errors++;
+    }
+    fprintf(stdout, "data ram 3 errors = %d\n", errors);
+    free(write_data);
+    free(read_data);
+
+
 
     munmap(base_addr,FPGA_SIZE);
 
