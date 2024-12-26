@@ -113,7 +113,7 @@ module top (
     localparam int Nregs = 16;
     logic [Nregs-1:0][31:0] slv_reg, slv_read;
 
-    assign slv_read[0] = 32'hdeadbeef;
+    assign slv_read[0] = 32'hcafebabe;
     assign slv_read[1] = 32'h76543210;
     
     assign dg_enable = slv_reg[2][0];
