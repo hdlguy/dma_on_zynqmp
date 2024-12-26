@@ -11,65 +11,34 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="189.052 ns"></ZoomEndTime>
-      <Cursor1Time time="0.000 ns"></Cursor1Time>
+      <ZoomStartTime time="1.666666 us"></ZoomStartTime>
+      <ZoomEndTime time="11.666667 us"></ZoomEndTime>
+      <Cursor1Time time="10.000000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="112"></ValueColumnWidth>
+      <ValueColumnWidth column_width="108"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="21" />
-   <wvobject type="array" fp_name="/datagen_tb/length">
-      <obj_property name="ElementShortName">length[31:0]</obj_property>
-      <obj_property name="ObjectShortName">length[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/chan">
-      <obj_property name="ElementShortName">chan[3:0]</obj_property>
-      <obj_property name="ObjectShortName">chan[3:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
+   <WVObjectSize size="10" />
    <wvobject type="logic" fp_name="/datagen_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/run">
-      <obj_property name="ElementShortName">run</obj_property>
-      <obj_property name="ObjectShortName">run</obj_property>
-      <obj_property name="CustomSignalColor">#FFA500</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject type="array" fp_name="/datagen_tb/period">
+      <obj_property name="ElementShortName">period[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period[31:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/done">
-      <obj_property name="ElementShortName">done</obj_property>
-      <obj_property name="ObjectShortName">done</obj_property>
-      <obj_property name="CustomSignalColor">#FFA500</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject type="logic" fp_name="/datagen_tb/enable">
+      <obj_property name="ElementShortName">enable</obj_property>
+      <obj_property name="ObjectShortName">enable</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/m_axis_tready">
-      <obj_property name="ElementShortName">m_axis_tready</obj_property>
-      <obj_property name="ObjectShortName">m_axis_tready</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject type="logic" fp_name="/datagen_tb/ready">
+      <obj_property name="ElementShortName">ready</obj_property>
+      <obj_property name="ObjectShortName">ready</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/m_axis_tvalid">
-      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
-      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/m_axis_tdata">
-      <obj_property name="ElementShortName">m_axis_tdata[31:0]</obj_property>
-      <obj_property name="ObjectShortName">m_axis_tdata[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/m_axis_tlast">
-      <obj_property name="ElementShortName">m_axis_tlast</obj_property>
-      <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/m_axis_tdest">
-      <obj_property name="ElementShortName">m_axis_tdest[3:0]</obj_property>
-      <obj_property name="ObjectShortName">m_axis_tdest[3:0]</obj_property>
+   <wvobject type="logic" fp_name="/datagen_tb/clear">
+      <obj_property name="ElementShortName">clear</obj_property>
+      <obj_property name="ObjectShortName">clear</obj_property>
    </wvobject>
    <wvobject fp_name="divider15" type="divider">
       <obj_property name="label">uut</obj_property>
@@ -79,41 +48,16 @@
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/uut/run">
-      <obj_property name="ElementShortName">run</obj_property>
-      <obj_property name="ObjectShortName">run</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/uut/done">
-      <obj_property name="ElementShortName">done</obj_property>
-      <obj_property name="ObjectShortName">done</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/datagen_tb/uut/state">
       <obj_property name="ElementShortName">state[3:0]</obj_property>
       <obj_property name="ObjectShortName">state[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/uut/length">
-      <obj_property name="ElementShortName">length[31:0]</obj_property>
-      <obj_property name="ObjectShortName">length[31:0]</obj_property>
+   <wvobject type="array" fp_name="/datagen_tb/uut/period_count">
+      <obj_property name="ElementShortName">period_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_count[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/uut/chan">
-      <obj_property name="ElementShortName">chan[3:0]</obj_property>
-      <obj_property name="ObjectShortName">chan[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/uut/next_state">
-      <obj_property name="ElementShortName">next_state[3:0]</obj_property>
-      <obj_property name="ObjectShortName">next_state[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/uut/length_count_inc">
-      <obj_property name="ElementShortName">length_count_inc</obj_property>
-      <obj_property name="ObjectShortName">length_count_inc</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/datagen_tb/uut/length_count_clr">
-      <obj_property name="ElementShortName">length_count_clr</obj_property>
-      <obj_property name="ObjectShortName">length_count_clr</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/datagen_tb/uut/length_count">
-      <obj_property name="ElementShortName">length_count[31:0]</obj_property>
-      <obj_property name="ObjectShortName">length_count[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/period_pulse">
+      <obj_property name="ElementShortName">period_pulse</obj_property>
+      <obj_property name="ObjectShortName">period_pulse</obj_property>
    </wvobject>
 </wave_config>

@@ -5,6 +5,7 @@ module datagen(
     input   logic           enable,
     output  logic           ready,
     input   logic           clear,
+    input   logic[31:0]     period,
     //
     input   logic[3:0]       bram_clk, bram_rst, bram_en,
     input   logic[3:0][3:0]  bram_we,
@@ -27,9 +28,9 @@ module datagen(
     assign addrb = 0;
     assign dinb = 0;
 
+    logic period_pulse=0;
     logic[3:0] state=0, next_state;
     always_ff @(posedge clk) state <= next_state;
-    
     always_comb begin
         // defaults
         next_state = state;
@@ -52,6 +53,21 @@ module datagen(
         endcase
     end    
     
+    logic[31:0] period_count=-1;
+    always_ff @(posedge clk) begin
+        if (!enable) begin
+            period_count <= period;
+            period_pulse <= 0;
+        end else begin
+            if (period_count == 0) begin
+                period_count <= period;
+                period_pulse <= 1;
+            end else begin
+                period_count <= period_count - 1;
+                period_pulse <= 0;
+            end           
+        end
+    end
             
 endmodule
 
