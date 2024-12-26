@@ -97,6 +97,23 @@ sudo cp --recursive --preserve ./debianMinimalRootFS/* /media/pedro/rootfs/; syn
 
 
 
+## Run-time FPGA Configuration
+
+- Configure the PL side of the Zynq with an FPGA design. This has changed with this newer Linux on Zynq+.
+
+Modify your FPGA build script to produce a .bin file in addition to the normal .bit file. The FPGA example in this project has that command in compile.tcl.
+    
+Go to your terminal on the Zynq+ Linux command line.
+
+Do a "git pull" to get the latest .bin file from the FPGA side of the repo.
+
+cp .../fpga/implement/results/top.bit.bin to /lib/firmware
+
+Change to root with "sudo su".
+
+echo top.bit.bin > /sys/class/fpga_manager/fpga0/firmware
+
+This last command should make the "Done" LED go green indicating success.
 
 
 # Commands to burn Petalinux into the flash prom (not used)
