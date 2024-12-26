@@ -107,7 +107,7 @@ Go to your terminal on the Zynq+ Linux command line.
 
 Do a "git pull" to get the latest .bin file from the FPGA side of the repo.
 
-cp .../fpga/implement/results/top.bit.bin to /lib/firmware
+cp ../implement/results/top.bit.bin /lib/firmware
 
 Change to root with "sudo su".
 
