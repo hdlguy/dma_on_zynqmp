@@ -2,24 +2,31 @@
 
 module datagen_tb ();
 
-    logic[31:0]      period;
-    logic            enable;
-    logic            ready;
-    logic            clear;    
+    logic[31:0]     period;
+    logic[15:0]     length;
+    logic           enable;
+    logic           ready;
+    logic           clear=0;   
+     
     logic[3:0]       bram_clk, bram_rst, bram_en;
     logic[3:0][3:0]  bram_we;
-    logic[3:0][15:0] bram_addr;
-    logic[3:0][31:0] bram_din;
+    logic[3:0][15:0] bram_addr=0;
+    logic[3:0][31:0] bram_din=0;
     logic[3:0][31:0] bram_dout;
 
     localparam time clk_period=10; logic clk=0; always #(clk_period/2) clk=~clk;
+    
+    assign bram_clk = {4{clk}};
 
     datagen uut (.*);
     
+    localparam int P = 1000;
+    localparam int L = 10;
+    
     initial begin
         enable = 0;
-        period = 1000-1;
-        clear = 0;
+        period = P-1;
+        length = L-1;
         #(clk_period*10);
         enable = 1;
         #(clk_period*10000);
@@ -27,7 +34,50 @@ module datagen_tb ();
         #(clk_period*100);
         $stop();
     end
-
+    
+    always_ff @(posedge clk) clear <= ready;
+    
+    assign addr_clear = clear;    
+    assign bram_en = 4'b1111;
+    assign bram_we = 4'b0000;
+    
+ /*   
+    logic[3:0] state=0, next_state;
+    always_ff @(posedge clk) state <= next_state;
+    
+    logic addr_clear;
+    always_comb begin
+        next_state = state;
+        bram_en = 4'b1111;
+        bram_we = 4'b0000;
+        addr_clear = 0;
+        case (state)
+        
+            0: begin
+                next_state = 1;
+            end
+            
+            1: begin
+            end
+        
+            default: begin
+            end
+            
+        endcase
+    end
+    */
+    
+    logic[15:0] addr_count=0;
+    always_ff @(posedge clk) begin
+        if (addr_clear) begin
+            bram_addr <= 0;
+        end else begin
+            for (int i=0; i<4; i++) begin
+                bram_addr[i] <= bram_addr[i] + 4;
+            end
+        end
+    end
+    
 endmodule
 
 
