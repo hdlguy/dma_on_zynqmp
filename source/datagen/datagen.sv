@@ -17,11 +17,11 @@ module datagen(
 
     logic[3:0][1:0] web;
     logic[3:0][14:0] addrb;
-    logic[3:0][15:0] dinb;
+    logic[3:0][15:0] dinb,doutb;
     generate for (genvar i=0; i<4; i++) begin
         dgen_mem #(.size(2**16), .awidth(32), .bwidth(16)) mem_inst (
             .clka(bram_clk[i]), .wea(bram_we[i]), .addra(bram_addr[i][15:2]), .dina(bram_din[i]), .douta(bram_dout[i]), 
-            .clkb(clk), .web(web[i]), .addrb(addrb[i]), .dinb(dinb[i]), .doutb() 
+            .clkb(clk), .web(web[i]), .addrb(addrb[i]), .dinb(dinb[i]), .doutb(doutb[i]) 
         );
     end endgenerate
 
