@@ -20,7 +20,7 @@ module datagen_tb ();
 
     datagen uut (.*);
     
-    localparam int P = 1000;
+    localparam int P = 991;
     localparam int L = 10;
     
     initial begin
@@ -31,7 +31,7 @@ module datagen_tb ();
         enable = 1;
         #(clk_period*10000);
         enable = 0;
-        #(clk_period*100);
+        #(clk_period*10000);
         $stop();
     end
     
@@ -40,32 +40,6 @@ module datagen_tb ();
     assign addr_clear = clear;    
     assign bram_en = 4'b1111;
     assign bram_we = 4'b0000;
-    
- /*   
-    logic[3:0] state=0, next_state;
-    always_ff @(posedge clk) state <= next_state;
-    
-    logic addr_clear;
-    always_comb begin
-        next_state = state;
-        bram_en = 4'b1111;
-        bram_we = 4'b0000;
-        addr_clear = 0;
-        case (state)
-        
-            0: begin
-                next_state = 1;
-            end
-            
-            1: begin
-            end
-        
-            default: begin
-            end
-            
-        endcase
-    end
-    */
     
     logic[15:0] addr_count=0;
     always_ff @(posedge clk) begin

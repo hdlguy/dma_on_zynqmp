@@ -55,16 +55,24 @@ module datagen(
             end 
             
             2: begin
-                if (period_pulse) begin
-                    next_state = 3;
+                if (enable) begin
+                    if (period_pulse) begin
+                        next_state = 3;
+                    end
+                end else begin
+                    next_state = 0;
                 end
             end
             
             3: begin
                 length_clear = 0;
                 web = {4{2'b11}};
-                if (length_count == length) begin
-                    next_state = 4;
+                if (enable) begin
+                    if (length_count == length) begin
+                        next_state = 4;                        
+                    end
+                end else begin
+                    next_state = 0;
                 end
             end
             
@@ -123,22 +131,5 @@ endmodule
 
 
 /*
-module dgen_mem #(
-    parameter int size   = 2**16,   // size in bytes
-    parameter int awidth = 32,      // multiple of 8
-    parameter int bwidth = 16,       // mutiple of 8
-    parameter int Naddra = size*8/awidth,
-    parameter int Naddrb = size*8/bwidth
-) (
-    input   logic               clka,
-    input   logic[awidth/8-1:0] wea,
-    input   logic[Naddra-1:0]   addra,
-    input   logic[awidth-1:0]   dina,
-    input   logic[awidth-1:0]   douta,
-    input   logic               clkb,
-    input   logic[bwidth/8-1:0] web,
-    input   logic[Naddrb-1:0]   addrb,
-    input   logic[bwidth-1:0]   dinb,
-    input   logic[bwidth-1:0]   doutb
-);
+
 */

@@ -94,11 +94,15 @@ module top (
     
     // data generator for the DMA
     logic dg_enable, dg_ready, dg_clear;
+    logic[15:0] dg_length;
+    logic[31:0] dg_period;
     datagen datagen_inst (
         .clk        (clk), 
         .enable     (dg_enable),
         .ready      (dg_ready),
         .clear      (dg_clear),
+        .period     (dg_period),
+        .length     (dg_length),
         //
         .bram_clk   (bram_clk),
         .bram_addr  (bram_addr),
@@ -122,9 +126,13 @@ module top (
     assign dg_clear = slv_reg[2][8];
     assign slv_read[2][31:5] = slv_reg[2][31:5];
             
+    assign dg_length = slv_reg[3][15:0];
     assign slv_read[3] = slv_reg[3];
 
-    assign slv_read[Nregs-1:4] = slv_reg[Nregs-1:4];
+    assign dg_period = slv_reg[4];
+    assign slv_read[4] = slv_reg[4];
+
+    assign slv_read[Nregs-1:5] = slv_reg[Nregs-1:5];
 
 	axi_regfile_v1_0_S00_AXI #	(
 		.C_S_AXI_DATA_WIDTH(32),
