@@ -133,6 +133,7 @@ xilinx.com:ip:axi_bram_ctrl:4.1\
 xilinx.com:ip:blk_mem_gen:8.4\
 xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:zynq_ultra_ps_e:3.5\
+xilinx.com:ip:system_ila:1.1\
 "
 
    set list_ips_missing ""
@@ -1318,6 +1319,16 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   set_property CONFIG.SINGLE_PORT_BRAM {1} $axi_bram_ctrl_4
 
 
+  # Create instance: system_ila_0, and set properties
+  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
+  set_property -dict [list \
+    CONFIG.C_ADV_TRIGGER {true} \
+    CONFIG.C_DATA_DEPTH {2048} \
+    CONFIG.C_EN_STRG_QUAL {1} \
+    CONFIG.C_INPUT_PIPE_STAGES {2} \
+  ] $system_ila_0
+
+
   # Create interface connections
   connect_bd_intf_net -intf_net axi_bram_ctrl_0_BRAM_PORTA [get_bd_intf_pins axi_bram_ctrl_0/BRAM_PORTA] [get_bd_intf_pins blk_mem_gen_0/BRAM_PORTA]
   connect_bd_intf_net -intf_net axi_bram_ctrl_1_BRAM_PORTA [get_bd_intf_ports bram0] [get_bd_intf_pins axi_bram_ctrl_1/BRAM_PORTA]
@@ -1331,6 +1342,7 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   connect_bd_intf_net -intf_net ps8_0_axi_periph_M04_AXI [get_bd_intf_pins ps8_0_axi_periph/M04_AXI] [get_bd_intf_pins axi_bram_ctrl_3/S_AXI]
   connect_bd_intf_net -intf_net ps8_0_axi_periph_M05_AXI [get_bd_intf_pins ps8_0_axi_periph/M05_AXI] [get_bd_intf_pins axi_bram_ctrl_4/S_AXI]
   connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_FPD [get_bd_intf_pins ps8_0_axi_periph/S00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_FPD]
+connect_bd_intf_net -intf_net [get_bd_intf_nets zynq_ultra_ps_e_0_M_AXI_HPM0_FPD] [get_bd_intf_pins ps8_0_axi_periph/S00_AXI] [get_bd_intf_pins system_ila_0/SLOT_0_AXI]
 
   # Create port connections
   connect_bd_net -net rst_ps8_0_100M_peripheral_aresetn  [get_bd_pins rst_ps8_0_100M/peripheral_aresetn] \
@@ -1347,7 +1359,8 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   [get_bd_pins axi_bram_ctrl_4/s_axi_aresetn] \
   [get_bd_pins ps8_0_axi_periph/M05_ARESETN] \
   [get_bd_pins axi_bram_ctrl_3/s_axi_aresetn] \
-  [get_bd_pins ps8_0_axi_periph/M04_ARESETN]
+  [get_bd_pins ps8_0_axi_periph/M04_ARESETN] \
+  [get_bd_pins system_ila_0/resetn]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
   [get_bd_ports axi_aclk] \
   [get_bd_pins axi_bram_ctrl_0/s_axi_aclk] \
@@ -1364,7 +1377,8 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   [get_bd_pins axi_bram_ctrl_4/s_axi_aclk] \
   [get_bd_pins ps8_0_axi_periph/M05_ACLK] \
   [get_bd_pins axi_bram_ctrl_3/s_axi_aclk] \
-  [get_bd_pins ps8_0_axi_periph/M04_ACLK]
+  [get_bd_pins ps8_0_axi_periph/M04_ACLK] \
+  [get_bd_pins system_ila_0/clk]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0  [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] \
   [get_bd_pins rst_ps8_0_100M/ext_reset_in]
 
