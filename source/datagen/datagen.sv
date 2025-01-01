@@ -6,6 +6,7 @@ module datagen(
     output  logic           ready,
     input   logic           clear,
     input   logic[31:0]     period,
+    input   logic[15:0]     length,
     //
     input   logic[3:0]       bram_clk, bram_rst, bram_en,
     input   logic[3:0][3:0]  bram_we,
@@ -16,25 +17,30 @@ module datagen(
 
     logic[3:0][1:0] web;
     logic[3:0][14:0] addrb;
-    logic[3:0][15:0] dinb;
+    logic[3:0][15:0] dinb,doutb;
     generate for (genvar i=0; i<4; i++) begin
         dgen_mem #(.size(2**16), .awidth(32), .bwidth(16)) mem_inst (
             .clka(bram_clk[i]), .wea(bram_we[i]), .addra(bram_addr[i][15:2]), .dina(bram_din[i]), .douta(bram_dout[i]), 
-            .clkb(clk), .web(web[i]), .addrb(addrb[i]), .dinb(dinb[i]), .doutb() 
+            .clkb(clk), .web(web[i]), .addrb(addrb[i]), .dinb(dinb[i]), .doutb(doutb[i]) 
         );
     end endgenerate
 
-    assign web = 0;
+    logic[15:0] length_count;
     assign addrb = 0;
-    assign dinb = 0;
+    assign addrb = {4{length_count[14:0]}};
+    assign dinb  = {4{length_count}};
 
+    logic set_ready;
+    logic length_clear;
     logic period_pulse=0;
     logic[3:0] state=0, next_state;
     always_ff @(posedge clk) state <= next_state;
     always_comb begin
         // defaults
         next_state = state;
-        ready = 0;
+        set_ready = 0;
+        length_clear = 1;
+        web = {4{2'b00}};
         
         case (state)
         
@@ -43,8 +49,29 @@ module datagen(
             end
             
             1: begin
-                next_state = 0;
+                if (enable) begin
+                    next_state = 2;
+                end
             end 
+            
+            2: begin
+                if (period_pulse) begin
+                    next_state = 3;
+                end
+            end
+            
+            3: begin
+                length_clear = 0;
+                web = {4{2'b11}};
+                if (length_count == length) begin
+                    next_state = 4;
+                end
+            end
+            
+            4: begin
+                set_ready = 1;
+                next_state = 1;
+            end
             
             default: begin
                 next_state = 0;
@@ -52,6 +79,29 @@ module datagen(
              
         endcase
     end    
+    
+    
+    always_ff @(posedge clk) begin
+        if (length_clear) begin
+            length_count <= 0;
+        end else begin
+            length_count <= length_count + 1;
+        end
+    end
+    
+    
+    logic ready_int=0;
+    always_ff @(posedge clk) begin
+        if (clear) begin
+            ready_int <= 0;
+        end else begin
+            if (set_ready) begin
+                ready_int <= 1;
+            end
+        end
+    end
+    assign ready = ready_int;
+    
     
     logic[31:0] period_count=-1;
     always_ff @(posedge clk) begin

@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1.666666 us"></ZoomStartTime>
-      <ZoomEndTime time="11.666667 us"></ZoomEndTime>
-      <Cursor1Time time="10.000000 us"></Cursor1Time>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="21.000001 us"></ZoomEndTime>
+      <Cursor1Time time="0.000000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="108"></ValueColumnWidth>
+      <NameColumnWidth column_width="174"></NameColumnWidth>
+      <ValueColumnWidth column_width="131"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="10" />
+   <WVObjectSize size="37" />
    <wvobject type="logic" fp_name="/datagen_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -40,6 +40,32 @@
       <obj_property name="ElementShortName">clear</obj_property>
       <obj_property name="ObjectShortName">clear</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/bram_clk">
+      <obj_property name="ElementShortName">bram_clk[3:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_clk[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/bram_en">
+      <obj_property name="ElementShortName">bram_en[3:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_en[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/bram_we">
+      <obj_property name="ElementShortName">bram_we[3:0][3:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_we[3:0][3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/bram_addr">
+      <obj_property name="ElementShortName">bram_addr[3:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr[3:0][15:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/bram_din">
+      <obj_property name="ElementShortName">bram_din[3:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_din[3:0][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/bram_dout">
+      <obj_property name="ElementShortName">bram_dout[3:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_dout[3:0][31:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
    <wvobject fp_name="divider15" type="divider">
       <obj_property name="label">uut</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -55,9 +81,102 @@
    <wvobject type="array" fp_name="/datagen_tb/uut/period_count">
       <obj_property name="ElementShortName">period_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">period_count[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/datagen_tb/uut/period_pulse">
       <obj_property name="ElementShortName">period_pulse</obj_property>
       <obj_property name="ObjectShortName">period_pulse</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/length_clear">
+      <obj_property name="ElementShortName">length_clear</obj_property>
+      <obj_property name="ObjectShortName">length_clear</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/length_count">
+      <obj_property name="ElementShortName">length_count[15:0]</obj_property>
+      <obj_property name="ObjectShortName">length_count[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/web">
+      <obj_property name="ElementShortName">web[3:0][1:0]</obj_property>
+      <obj_property name="ObjectShortName">web[3:0][1:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/addrb">
+      <obj_property name="ElementShortName">addrb[3:0][14:0]</obj_property>
+      <obj_property name="ObjectShortName">addrb[3:0][14:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/dinb">
+      <obj_property name="ElementShortName">dinb[3:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">dinb[3:0][15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/doutb">
+      <obj_property name="ElementShortName">doutb[3:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">doutb[3:0][15:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="divider27" type="divider">
+      <obj_property name="label">bram</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/rstb">
+      <obj_property name="ElementShortName">rstb</obj_property>
+      <obj_property name="ObjectShortName">rstb</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/clkb">
+      <obj_property name="ElementShortName">clkb</obj_property>
+      <obj_property name="ObjectShortName">clkb</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/enb">
+      <obj_property name="ElementShortName">enb</obj_property>
+      <obj_property name="ObjectShortName">enb</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/web">
+      <obj_property name="ElementShortName">web[1:0]</obj_property>
+      <obj_property name="ObjectShortName">web[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/addrb">
+      <obj_property name="ElementShortName">addrb[14:0]</obj_property>
+      <obj_property name="ObjectShortName">addrb[14:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/dinb">
+      <obj_property name="ElementShortName">dinb[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dinb[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /doutb">
+      <obj_property name="ElementShortName">doutb[15:0]</obj_property>
+      <obj_property name="ObjectShortName">doutb[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/rsta">
+      <obj_property name="ElementShortName">rsta</obj_property>
+      <obj_property name="ObjectShortName">rsta</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/clka">
+      <obj_property name="ElementShortName">clka</obj_property>
+      <obj_property name="ObjectShortName">clka</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/ena">
+      <obj_property name="ElementShortName">ena</obj_property>
+      <obj_property name="ObjectShortName">ena</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/wea">
+      <obj_property name="ElementShortName">wea[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wea[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/addra">
+      <obj_property name="ElementShortName">addra[13:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[13:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/dina">
+      <obj_property name="ElementShortName">dina[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dina[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datagen_tb/uut/\genblk1[0].mem_inst /xpm_memory_tdpram_inst/douta">
+      <obj_property name="ElementShortName">douta[31:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[31:0]</obj_property>
    </wvobject>
 </wave_config>
