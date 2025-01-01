@@ -31,25 +31,25 @@ int main(int argc,char** argv)
     uint32_t *write_data, *read_data, *bram_ptr;
     int errors;
 
-    // scratch bram.
-    write_data = malloc(TEST_RAM_SIZE);
-    read_data  = malloc(TEST_RAM_SIZE);
-    // create test data.
-    for (int i=0; i<TEST_RAM_SIZE/4; i++) write_data[i] = rand();
-    bram_ptr = base_addr + TEST_RAM_OFFSET;
-    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
-    // write bram
-    for (int i=0; i<TEST_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
-    // read bram
-    for (int i=0; i<TEST_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
-    // chech bram results
-    errors = 0;
-    for (int i=0; i<TEST_RAM_SIZE/4; i++) {
-        if (read_data[i] != write_data[i]) errors++;
+    const uint32_t period = 100000000;
+    const uint16_t length = 100;
+    const int Nrecord = 5;
+
+    regptr[DGEN_PERIOD] = period-1;
+    regptr[DGEN_LENGTH] = length-1;
+    regptr[DGEN_CONTROL] = 0x0101;
+
+    int whilecount = 0;
+    while(whilecount<Nrecord) {
+
+        while((regptr[DGEN_CONTROL] & 0x0010) != 0); // wait for ready signal
+        regptr[DGEN_CONTROL] = 0x0101; // clear datagen ready signal
+        printf("dgen_ready = 1\n");
+        
+        whilecount++;
     }
-    fprintf(stdout, "scratch bram errors = %d\n", errors);
-    free(write_data);
-    free(read_data);
+    regptr[DGEN_CONTROL] = 0x0100;
+
 
     // data ram 0
     write_data = malloc(DATA_RAM_SIZE);
@@ -68,66 +68,6 @@ int main(int argc,char** argv)
         if (read_data[i] != write_data[i]) errors++;
     }
     fprintf(stdout, "data ram 0 errors = %d\n", errors);
-    free(write_data);
-    free(read_data);
-
-    // data ram 1
-    write_data = malloc(DATA_RAM_SIZE);
-    read_data  = malloc(DATA_RAM_SIZE);
-    // create test data.
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) write_data[i] = rand();
-    bram_ptr = base_addr + DATA_RAM1;
-    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
-    // write bram
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
-    // read bram
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
-    // chech bram results
-    errors = 0;
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) {
-        if (read_data[i] != write_data[i]) errors++;
-    }
-    fprintf(stdout, "data ram 1 errors = %d\n", errors);
-    free(write_data);
-    free(read_data);
-
-    // data ram 2
-    write_data = malloc(DATA_RAM_SIZE);
-    read_data  = malloc(DATA_RAM_SIZE);
-    // create test data.
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) write_data[i] = rand();
-    bram_ptr = base_addr + DATA_RAM2;
-    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
-    // write bram
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
-    // read bram
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
-    // chech bram results
-    errors = 0;
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) {
-        if (read_data[i] != write_data[i]) errors++;
-    }
-    fprintf(stdout, "data ram 2 errors = %d\n", errors);
-    free(write_data);
-    free(read_data);
-
-    // data ram 3
-    write_data = malloc(DATA_RAM_SIZE);
-    read_data  = malloc(DATA_RAM_SIZE);
-    // create test data.
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) write_data[i] = rand();
-    bram_ptr = base_addr + DATA_RAM3;
-    fprintf(stdout, "\nbram_ptr = %p\n", bram_ptr);
-    // write bram
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
-    // read bram
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
-    // chech bram results
-    errors = 0;
-    for (int i=0; i<DATA_RAM_SIZE/4; i++) {
-        if (read_data[i] != write_data[i]) errors++;
-    }
-    fprintf(stdout, "data ram 3 errors = %d\n", errors);
     free(write_data);
     free(read_data);
 

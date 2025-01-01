@@ -18,4 +18,6 @@
 #define     FPGA_ID                 0
 #define     FPGA_VERSION            1
 #define     DGEN_CONTROL            2   // [0]=dg_enable, [4]=dg_ready(read-only), [8]=dg_clear
+#define     DGEN_LENGTH             3   // [15:0] = length of data record written to ram (minus 1).
+#define     DGEN_PERIOD             4   // [31:0] = period between collections in 100MHz clock ticks (minus 1).
 
