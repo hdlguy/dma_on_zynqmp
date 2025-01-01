@@ -37,9 +37,13 @@ int main(int argc,char** argv)
 
     regptr[DGEN_PERIOD] = period-1;
     regptr[DGEN_LENGTH] = length-1;
-    regptr[DGEN_CONTROL] = 0x0101;
+
+    FILE* fp = fopen("dgen_data.bin","w");
+
+    fwrite(regptr, sizeof(uint32_t), N_REGS, fp);
 
     int whilecount = 0;
+    regptr[DGEN_CONTROL] = 0x0101;
     while(whilecount<Nrecord) {
 
         while((regptr[DGEN_CONTROL] & 0x0010) != 0); // wait for ready signal
@@ -50,6 +54,7 @@ int main(int argc,char** argv)
     }
     regptr[DGEN_CONTROL] = 0x0100;
 
+    fclose(fp);
 
     // data ram 0
     write_data = malloc(DATA_RAM_SIZE);

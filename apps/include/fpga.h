@@ -15,6 +15,7 @@
 
 
 // register numbers
+#define     N_REGS                  16  // number of 32-bit registers.
 #define     FPGA_ID                 0
 #define     FPGA_VERSION            1
 #define     DGEN_CONTROL            2   // [0]=dg_enable, [4]=dg_ready(read-only), [8]=dg_clear
