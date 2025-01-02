@@ -7,9 +7,9 @@ set_property part xczu2cg-sfvc784-1-e [current_project]
 set_property target_language Verilog [current_project]
 set_property default_lib work [current_project]
 
-#read_ip ../dgen_rom/dgen_rom.xci
-#upgrade_ip -quiet  [get_ips *]
-#generate_target {all} [get_ips *]
+read_ip ../dgen_ila/dgen_ila.xci
+upgrade_ip -quiet  [get_ips *]
+generate_target {all} [get_ips *]
 
 read_verilog -sv ../dgen_mem.sv  
 read_verilog -sv ../datagen.sv  

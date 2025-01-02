@@ -97,7 +97,7 @@ module top (
     logic[15:0] dg_length;
     logic[31:0] dg_period;
     datagen datagen_inst (
-        .clk        (clk), 
+        .clk        (axi_aclk), 
         .enable     (dg_enable),
         .ready      (dg_ready),
         .clear      (dg_clear),
@@ -182,10 +182,10 @@ module top (
     
 	logic[26:0] clk200_count;
     always_ff @(posedge clk200) clk200_count <= clk200_count + 1;
-    top_ila clk200_ila_inst (.clk(clk200), .probe0(clk200_count)); // 27
+    //top_ila clk200_ila_inst (.clk(clk200), .probe0(clk200_count)); // 27
     
     
-    top_ila top_ila_inst (.clk(axi_aclk), .probe0({s_axis_s2mm_tdata,s_axis_s2mm_tdest,s_axis_s2mm_tid,s_axis_s2mm_tkeep,s_axis_s2mm_tlast,s_axis_s2mm_tready,s_axis_s2mm_tuser,s_axis_s2mm_tvalid})); // 32+4+8+4+16+3=67
+    //top_ila top_ila_inst (.clk(axi_aclk), .probe0({s_axis_s2mm_tdata,s_axis_s2mm_tdest,s_axis_s2mm_tid,s_axis_s2mm_tkeep,s_axis_s2mm_tlast,s_axis_s2mm_tready,s_axis_s2mm_tuser,s_axis_s2mm_tvalid})); // 32+4+8+4+16+3=67
            
 endmodule
 
