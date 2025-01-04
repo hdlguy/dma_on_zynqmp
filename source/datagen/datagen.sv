@@ -127,7 +127,7 @@ module datagen(
         end
     end
     
-    dgen_ila ila_inst(.clk(clk), .probe0({enable, ready, clear, period_pulse, web, state, addrb[0], dinb[0]})); //41
+    dgen_ila ila_inst(.clk(clk), .probe0({enable, ready, clear, period_pulse, web[0], state, addrb[0], dinb[0]})); //41
             
 endmodule
 
