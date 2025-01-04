@@ -26,7 +26,6 @@ module datagen(
     end endgenerate
 
     logic[15:0] length_count;
-    assign addrb = 0;
     assign addrb = {4{length_count[14:0]}};
     assign dinb  = {4{length_count}};
 
