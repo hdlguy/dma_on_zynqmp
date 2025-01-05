@@ -21,7 +21,7 @@ int main(int argc,char** argv)
         if(base_addr == NULL) fprintf(stderr,"Can't mmap\n");
     }
 
-    printf("FPGA_BASE_ADDRESS = 0x%08x, base_addr = %p\n", FPGA_BASE_ADDRESS, base_addr);
+    //printf("FPGA_BASE_ADDRESS = 0x%08x, base_addr = %p\n", FPGA_BASE_ADDRESS, base_addr);
 
     uint32_t *regptr = base_addr + FPGA_REG_OFFSET;
 
@@ -32,9 +32,10 @@ int main(int argc,char** argv)
     int errors;
 
     const uint32_t period = 100000000;
-    const uint16_t length = 100;
+    const uint16_t length = 32; // must be power of two, why?
     const int Nrecord = 5;
 
+    regptr[DGEN_CONTROL] = 0x0000; // clear enable
     regptr[DGEN_PERIOD] = period-1;
     regptr[DGEN_LENGTH] = length-1;
 
@@ -44,17 +45,19 @@ int main(int argc,char** argv)
 
     bram_ptr = base_addr + DATA_RAM0;
     int whilecount = 0;
-    regptr[DGEN_CONTROL] = 0x0101;
+    regptr[DGEN_CONTROL] = 0x0001; // enable dgen
     while(whilecount<Nrecord) {
 
-        while((regptr[DGEN_CONTROL] & 0x0010) != 0); // wait for ready signal
-        regptr[DGEN_CONTROL] = 0x0101; // clear datagen ready signal
+        while(((regptr[DGEN_CONTROL]) & 0x00000010) == 0); // wait for ready signal
+        regptr[DGEN_CONTROL] = 0x0101; // assert clear
+        //while(((regptr[DGEN_CONTROL]) & 0x0010) != 0); // wait for not ready signal
+        regptr[DGEN_CONTROL] = 0x0001; // deassert clear
         printf("dgen_ready = 1\n");
         fwrite(bram_ptr, sizeof(uint32_t), length/2, fp);
         
         whilecount++;
     }
-    regptr[DGEN_CONTROL] = 0x0100;
+    regptr[DGEN_CONTROL] = 0x0000;
 
     fclose(fp);
 
